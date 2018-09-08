@@ -7,26 +7,30 @@ The code is not sequential, it's a conjunction of logical constraints.
 Examples:
 
 ```
-define ssum (X Y) Z :-
+define sum (Uint Uint) -> (Uint)
+case (1 1) (2).
+case (X Y) (Z) :-
     (= Z (+ X Y)).
 ```
 
 ```
-define double (X) D :-
-    (= D (ssum X X)).
+define double (Uint) -> (Uint)
+case (X) (D) :-
+    (= D (sum X X)).
 ```
 
 ```
-define triple (X) T :-
-    (= D (ssum X X)),
+define triple (Uint) -> (Uint)
+case (X) (T) :-
+    (= D (ssum X X))
     (= T (ssum X D)).
 ```
 
 ```
-define min
-([X]) X.
-([H|T]) X :-
-    (= Y min(T)),
+define recursive min (List) -> (Uint)
+case ([X]) (X).
+case ([H:T*]) (X) :-
+    (= Y (min T))
     (= X (ite (< H Y) H Y)).
 ```
 
@@ -36,35 +40,16 @@ declare Owner UInt.
 
 define isOwner (Addr) :- (= Addr Owner).
 
-define transfer public (To Amount) :-
-    (= FromBalance (select Balance Sender)),
-    (>= FromBalance Amount),
-    (= ToBalance (select Balance To)),
-    (= Balance2 (store Balance Sender (- FromBalance Amount))),
-    (= Balance3 (store Balance2 To (+ ToBalance Amount))),
-    (prove (= (sum Balance3) (sum Balance))),
+define transfer (Uint Uint) -> (Bool)
+case (To Amount) (_) :-
+    (= FromBalance (select Balance Sender))
+    (>= FromBalance Amount)
+    (= ToBalance (select Balance To))
+    (= Balance2 (store Balance Sender (- FromBalance Amount)))
+    (= Balance3 (store Balance2 To (+ ToBalance Amount)))
+    (prove (= (sum Balance3) (sum Balance)))
     (update Balance Balance3).
 ```
 
 Grammar:
-
-Contract := ElemList
-ElemList := StateVar | Function | ElemList
-StateVar := `declare` Identifier Visibility Type `.`
-Visibility := Public | NULL
-Type := UInt | Array | List
-Function := `define` Identifier Visibility Cases
-Cases := Case | Cases
-Case := `(` ParamList `)` Return CaseBody `.`
-Return := Parameter | NULL
-ArrayIdentifier := `[` ArrayContent `]`
-ArrayContent := NULL | Identifier | (Identifier `|` Identifier)
-CaseBody := `:-` StatementList
-ParamList := Parameter | ParamList
-StatementList := Statement | (Statement `,` StatementList)
-Statement := `(` (UserPred ArgsList) | UnaryOp Arg | BinaryOp Arg Arg | TernaryOp Arg Arg Arg) `)`
-Arg := Identifier | Number | Statement
-ArgsList := NULL | Arg ArgsList
-UnaryOp := `prove` | `sum` | `not`
-BinaryOp := `=`, `!=`, `<`, `>`, `<=`, `>=`, `+`, `-`, `*`, `/`, `update`, `select`
-TernaryOp := `store`, `ite`
+https://github.com/logikon-lang/logikon_rust/blob/master/src/logikon.pest
