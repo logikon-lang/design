@@ -7,29 +7,28 @@ The code is not sequential, it's a conjunction of logical constraints.
 Examples:
 
 ```
-define sum (Uint Uint) -> (Uint)
-case (1 1) (2).
-case (X Y) (Z) :-
+define sum (Uint Uint) -> Uint
+case (X Y) Z :-
     (= Z (+ X Y)).
 ```
 
 ```
-define double (Uint) -> (Uint)
-case (X) (D) :-
+define double (Uint) -> Uint
+case (X) D :-
     (= D (sum X X)).
 ```
 
 ```
-define triple (Uint) -> (Uint)
-case (X) (T) :-
+define triple (Uint) -> Uint
+case (X) T :-
     (= D (ssum X X))
     (= T (ssum X D)).
 ```
 
 ```
-define recursive min (List) -> (Uint)
-case ([X]) (X).
-case ([H:T*]) (X) :-
+define recursive min (List) -> Uint
+case ([X]) X.
+case ([H:T*]) X :-
     (= Y (min T))
     (= X (ite (< H Y) H Y)).
 ```
@@ -38,10 +37,10 @@ case ([H:T*]) (X) :-
 declare Balance public Array.
 declare Owner UInt.
 
-define isOwner (Addr) :- (= Addr Owner).
+define isOwner (Addr) _ :- (= Addr Owner).
 
-define transfer (Uint Uint) -> (Bool)
-case (To Amount) (_) :-
+define transfer (Uint Uint) -> Bool
+case (To Amount) _ :-
     (= FromBalance (select Balance Sender))
     (>= FromBalance Amount)
     (= ToBalance (select Balance To))
@@ -52,4 +51,4 @@ case (To Amount) (_) :-
 ```
 
 Grammar:
-https://github.com/logikon-lang/logikon_rust/blob/master/src/logikon.pest
+https://github.com/logikon-lang/logikon/blob/master/src/logikon.pest
