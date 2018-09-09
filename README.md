@@ -1,8 +1,15 @@
 # Logikon
 
-Logikon is a logical/functional language for smart contracts.
-Assertions are statically checked and are not compiled into EVM bytecode.
-The code is not sequential, it's a conjunction of logical constraints.
+Logikon is a logical/functional language for smart contracts featuring
+simplicity and security.  Logical and functional languages such as Prolog and
+Haskell inspire the design of Logikon, aiming at being elegant and simple.
+Logikon also borrows the SMTLib2 language to write function inner expressions.
+
+The code is not sequential, and is written as a set of logical constraints.
+Ideally these logical constraints are statically and formally verified against
+a specification given in the code in compile-time. Logikon compiles to YUL, the
+intermediate language used in Solidity, which compiles to multiple EVM bytecode
+versions.
 
 Examples:
 
