@@ -11,7 +11,15 @@ a specification given in the code in compile-time. Logikon compiles to YUL, the
 intermediate language used in Solidity, which compiles to multiple EVM bytecode
 versions.
 
-Examples:
+# Compiler
+
+https://github.com/logikon-lang/logikon
+
+# Grammar
+
+https://github.com/logikon-lang/logikon/blob/master/src/logikon.pest
+
+# Examples
 
 ```
 define sum (Uint Uint) -> Uint
@@ -56,6 +64,3 @@ case (To Amount) _ :-
     (prove (= (sum Balance3) (sum Balance)))
     (update Balance Balance3).
 ```
-
-Grammar:
-https://github.com/logikon-lang/logikon/blob/master/src/logikon.pest
