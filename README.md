@@ -49,8 +49,8 @@ case ([H:T*]) X :-
 ```
 
 ```
-declare Balance public Array.
-declare Owner UInt.
+declare Balance Array.
+declare Owner Uint.
 
 define isOwner (Addr) _ :- (= Addr Owner).
 
